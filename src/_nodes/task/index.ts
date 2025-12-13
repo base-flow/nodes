@@ -1,25 +1,29 @@
 import type { INodeConfig } from '@baseflow/react';
 import type { NodeProps } from './model';
-import { NodeType } from '@baseflow/react';
+import { DataType, NodeType } from '@baseflow/react';
 import PKG from './package.json';
 
 const config: INodeConfig<NodeProps> = {
   version: PKG.version,
-  type: NodeType.Branch,
+  type: NodeType.Task,
   icon: '',
-  desc: '条件分支：放置于[条件选择]中，通过设置执行条件来决定是否执行',
+  desc: 'Task任务',
   backend: {},
   defaultData(graph) {
     return {
       meta: {
-        name: '条件分支',
+        name: 'Task任务',
         width: 250,
         height: 68,
+        outputSchema: { name: 'output', type: DataType.Bool },
       },
       props: {},
     };
   },
-  validate() {
+  validate({ nodeData }) {
+    if (!nodeData.props.input) {
+      return 'Task input is required!';
+    }
   },
 };
 

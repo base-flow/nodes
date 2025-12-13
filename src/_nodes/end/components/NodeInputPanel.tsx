@@ -1,7 +1,7 @@
 import type { INodeInputPanel, SchemaLabelRender, SchemaValue } from "@baseflow/react";
-import { BaseLang, FlowErrors, SchemaValueForm, useEvent } from "@baseflow/react";
+import { BaseLang, FlowErrors, SchemaValueForm } from "@baseflow/react";
 import { Alert, Button } from "antd";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import type { NodeProps } from "../model";
 
 const returnLabelRender: SchemaLabelRender = (item, parent) => {
@@ -10,31 +10,29 @@ const returnLabelRender: SchemaLabelRender = (item, parent) => {
   }
 };
 
-const Component: INodeInputPanel<NodeProps> = ({ nodeData, node }) => {
-  const returnSchema = useMemo(() => node.getGraph().getReturnSchema(), [node]);
+const Component: INodeInputPanel<NodeProps> = ({ nodeData, _node, _graph }) => {
+  const returnSchema = _graph.getReturnSchema();
   const returnValue = nodeData.meta.valueReference?.value;
-
-  const onReturnChange = useEvent((value: SchemaValue | undefined) => {
-    node.updateMeta({ valueReference: { path: "flow", value } });
-  });
-
-  const onConfirmed = useEvent(() => {
-    node.updateErrors(undefined, "configurationErrors");
-    if (!returnSchema && returnValue) {
-      node.updateMeta({ valueReference: { path: "flow", value: undefined } });
-    }
-  });
 
   return (
     <div>
       {nodeData.meta.configurationErrors === FlowErrors.returnSchemaChanged && (
         <Alert
-          message={BaseLang.returnSchemaChanged}
+          title={BaseLang.returnSchemaChanged}
           type="warning"
           showIcon
           style={{ marginBottom: "20px" }}
           action={
-            <Button size="small" type="primary" onClick={onConfirmed}>
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => {
+                _node.updateErrors(undefined, "configurationErrors");
+                if (!returnSchema && returnValue) {
+                  _node.updateMeta({ valueReference: { path: "flow", value: undefined } });
+                }
+              }}
+            >
               确认
             </Button>
           }
@@ -45,7 +43,15 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData, node }) => {
           <div className="form-item">
             <div className="label-item require">设置返回参数</div>
             <div className="input-item">
-              <SchemaValueForm variant="filled" labelRender={returnLabelRender} schema={returnSchema} value={returnValue} onChange={onReturnChange} />
+              <SchemaValueForm
+                variant="filled"
+                labelRender={returnLabelRender}
+                schema={returnSchema}
+                value={returnValue}
+                onChange={(value: SchemaValue | undefined) => {
+                  _node.updateMeta({ valueReference: { path: "flow", value } });
+                }}
+              />
             </div>
           </div>
         </div>

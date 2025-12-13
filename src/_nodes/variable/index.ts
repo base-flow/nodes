@@ -1,20 +1,23 @@
 import type { INodeConfig } from '@baseflow/react';
 import type { NodeProps } from './model';
-import { NodeType } from '@baseflow/react';
+import { DataType, NodeType } from '@baseflow/react';
+import NodeInputPanel from './components/NodeInputPanel';
 import PKG from './package.json';
 
 const config: INodeConfig<NodeProps> = {
   version: PKG.version,
-  type: NodeType.Flow,
+  type: NodeType.Variable,
   icon: '',
-  desc: '流程：定义一个独立的流程',
+  desc: '变量定义：通过本节点可以定义多个流程变量',
+  NodeInputPanel,
   backend: {},
   defaultData() {
     return {
       meta: {
-        name: '流程',
+        name: '变量定义',
         width: 250,
         height: 68,
+        outputSchema: { name: 'output', type: DataType.Object, children: [{ name: 'new', type: DataType.String }] },
       },
       props: {},
     };

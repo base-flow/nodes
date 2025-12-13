@@ -1,0 +1,49 @@
+:global {
+  :local(.variableUpdate) {
+    .switch-mode {
+      position: absolute;
+      right: 0;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .position {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .anticon {
+      color: var(--bf-tx-lesser);
+      cursor: help;
+    }
+
+    .ant-input-number {
+      width: 50px;
+    }
+
+    .remove-targets {
+      padding: 20px;
+      background: var(--bf-bg-filled);
+      border-radius: var(--bf-rd-card);
+
+      > .title {
+        padding: 0 0 13px 2px;
+      }
+    }
+
+    .nd-form-layout {
+      padding-top: 2px;
+    }
+
+    .input-scripts {
+      min-height: 100px;
+    }
+  }
+}

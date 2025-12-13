@@ -1,6 +1,6 @@
 import type { INodeConfig } from "@baseflow/react";
 import { FlowErrors, NodeType } from "@baseflow/react";
-//import NodeInputPanel from "./components/NodeInputPanel";
+import NodeInputPanel from "./components/NodeInputPanel";
 import type { NodeProps } from "./model";
 import PKG from "./package.json";
 
@@ -9,7 +9,7 @@ const config: INodeConfig<NodeProps> = {
   type: NodeType.End,
   icon: "",
   desc: "流程结束：流程正常执行完成，可以设置返回数据",
-  // NodeInputPanel,
+  NodeInputPanel,
   backend: {},
   defaultData() {
     return {

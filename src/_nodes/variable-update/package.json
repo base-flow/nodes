@@ -1,5 +1,5 @@
 {
-  "name": "@baseflow-nodes/end",
+  "name": "@baseflow-nodes/variable-update",
   "version": "1.0.0",
   "dependencies": {
     "@baseflow/react": "*"
