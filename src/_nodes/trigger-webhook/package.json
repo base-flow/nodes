@@ -1,7 +1,4 @@
 {
   "name": "@baseflow-nodes/trigger-webhook",
-  "version": "1.0.0",
-  "dependencies": {
-    "@baseflow/react": "*"
-  }
+  "version": "1.0.0"
 }

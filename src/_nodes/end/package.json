@@ -1,7 +1,4 @@
 {
   "name": "@baseflow-nodes/end",
-  "version": "1.0.0",
-  "dependencies": {
-    "@baseflow/react": "*"
-  }
+  "version": "1.0.0"
 }

@@ -1,35 +1,39 @@
-import type { INodeConfig } from '@baseflow/react';
-import type { DSLProps, NodeProps } from './model';
-import { DataType, FlowErrors, NodeType } from '@baseflow/react';
-import NodeInputPanel from './components/NodeInputPanel';
-import { DefaultHeaders } from './model';
-import PKG from './package.json';
+import type { INodeConfig } from "@baseflow/react";
+import { DataType, FlowErrors, NodeType } from "@baseflow/react";
+import NodeInputPanel from "./components/NodeInputPanel";
+import type { DSLProps, NodeProps } from "./model";
+import { DefaultHeaders } from "./model";
+import PKG from "./package.json";
 
 const config: INodeConfig<NodeProps, DSLProps> = {
   version: PKG.version,
   type: NodeType.Trigger,
-  icon: '',
-  desc: 'webhook触发器：让流程能被指定的Http请求触发',
+  icon: "",
+  desc: "webhook触发器：让流程能被指定的Http请求触发",
   NodeInputPanel,
   backend: {},
   defaultData() {
     return {
       meta: {
-        name: 'webhook',
+        name: "webhook",
         width: 80,
         height: 68,
-        outputSchema: { name: 'output', type: DataType.Object, children: [
-          { name: 'headers', type: DataType.Object, children: DefaultHeaders },
-          { name: 'params', type: DataType.Object },
-          { name: 'queries', type: DataType.Object },
-          { name: 'cookies', type: DataType.Object },
-          { name: 'body', type: DataType.Object },
-        ] },
-        valueReference: { path: 'start' },
+        outputSchema: {
+          name: "output",
+          type: DataType.Object,
+          children: [
+            { name: "headers", type: DataType.Object, children: DefaultHeaders },
+            { name: "params", type: DataType.Object },
+            { name: "queries", type: DataType.Object },
+            { name: "cookies", type: DataType.Object },
+            { name: "body", type: DataType.Object },
+          ],
+        },
+        valueReference: { path: "start" },
       },
       props: {
-        methods: ['post'],
-        contentType: 'json',
+        methods: ["post"],
+        contentType: "json",
       },
     };
   },
@@ -40,22 +44,22 @@ const config: INodeConfig<NodeProps, DSLProps> = {
     }
     const props = nodeData.props;
     if (!props.path) {
-      return '监听地址不能为空';
+      return "监听地址不能为空";
     }
     if (!props.methods?.length) {
-      return '监听方法不能为空';
+      return "监听方法不能为空";
     }
     if (props.headers) {
       for (const item of props.headers) {
         if (!item.value) {
-          return 'key不能为空';
+          return "key不能为空";
         }
       }
     }
     if (props.queries) {
       for (const item of props.queries) {
         if (!item.value) {
-          return 'key不能为空';
+          return "key不能为空";
         }
       }
     }
@@ -64,18 +68,18 @@ const config: INodeConfig<NodeProps, DSLProps> = {
     out(props) {
       const { headers, queries, cookies, ...others } = props;
       return {
-        headers: headers?.map(item => item.value),
-        queries: queries?.map(item => item.value),
-        cookies: cookies?.map(item => item.value),
+        headers: headers?.map((item) => item.value),
+        queries: queries?.map((item) => item.value),
+        cookies: cookies?.map((item) => item.value),
         ...others,
       };
     },
     in(dsl) {
       const { headers, queries, cookies, ...others } = dsl;
       return {
-        headers: headers?.map(item => ({ value: item })),
-        queries: queries?.map(item => ({ value: item })),
-        cookies: cookies?.map(item => ({ value: item })),
+        headers: headers?.map((item) => ({ value: item })),
+        queries: queries?.map((item) => ({ value: item })),
+        cookies: cookies?.map((item) => ({ value: item })),
         ...others,
       };
     },

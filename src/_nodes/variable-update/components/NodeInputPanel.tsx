@@ -1,26 +1,30 @@
-import type { INodeInputPanel, SchemaValue, ValueConfig } from '@baseflow/react';
-import type { RadioChangeEvent } from 'antd';
-import type { NodeProps } from '../model';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { DataType, KeyValues, SchemaValueForm, SuperInput, useEvent, ValueSource } from '@baseflow/react';
-import { InputNumber, Radio, Switch, Tooltip } from 'antd';
-import { memo, useEffect, useMemo, useRef } from 'react';
-import styles from './index.module.scss';
+/** biome-ignore-all lint/style/noNestedTernary: <use no memo> */
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import type { INodeInputPanel, SchemaValue, ValueConfig } from "@baseflow/react";
+import { DataType, KeyValues, SchemaValueForm, SuperInput, useEvent, useGraph, useNode, ValueSource } from "@baseflow/react";
+import type { RadioChangeEvent } from "antd";
+import { InputNumber, Radio, Switch, Tooltip } from "antd";
+import { memo, useEffect, useMemo, useRef } from "react";
+import type { NodeProps } from "../model";
+import styles from "./index.module.scss";
 
 const Actions = [
-  { label: '覆盖原值', value: 'assign' },
-  { label: '插入一段元素', value: 'insert' },
-  { label: '移除一段元素', value: 'remove' },
+  { label: "覆盖原值", value: "assign" },
+  { label: "插入一段元素", value: "insert" },
+  { label: "移除一段元素", value: "remove" },
 ];
 
-const Component: INodeInputPanel<NodeProps> = ({ nodeData, node }) => {
+const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
+  "use no memo";
+  const { graph } = useGraph();
+  const { node } = useNode(nodeData.id);
   const nodeProps = nodeData.props;
   const inited = useRef(false);
 
   const onModeChange = useEvent((useScripts: boolean) => {
     if (useScripts) {
-      node.updateProps({ scripts: { type: DataType.Any, source: ValueSource.Expression, text: '' }, variable: undefined, action: undefined, at: undefined, removeTargets: undefined });
-      node.updateMeta({ summary: 'scripts' });
+      node.updateProps({ scripts: { type: DataType.Any, source: ValueSource.Expression, text: "" }, variable: undefined, action: undefined, at: undefined, removeTargets: undefined });
+      node.updateMeta({ summary: "scripts" });
     } else {
       node.updateProps({ scripts: undefined });
       node.updateMeta({ summary: undefined });
@@ -34,8 +38,8 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData, node }) => {
     node.updateMeta({ valueReference: undefined });
   });
   const onActionChange = useEvent((e: RadioChangeEvent) => {
-    const action: 'assign' | 'insert' | 'remove' = e.target.value;
-    if (action === 'remove') {
+    const action: "assign" | "insert" | "remove" = e.target.value;
+    if (action === "remove") {
       node.updateProps({ action });
       node.updateMeta({ valueReference: undefined });
     } else {
@@ -61,14 +65,14 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData, node }) => {
   const variableSchema = useMemo(() => {
     const text = nodeProps.variable?.text;
     if (text) {
-      const schema = node.getGraph().getVariableSchema(text);
+      const schema = graph.getVariableSchema(text);
       if (inited.current && schema) {
-        node.updateMeta({ valueReference: { path: text, value: { name: schema.name, value: { type: schema.type, source: ValueSource.Variable, text: '', optional: schema.optional } } } });
+        node.updateMeta({ valueReference: { path: text, value: { name: schema.name, value: { type: schema.type, source: ValueSource.Variable, text: "", optional: schema.optional } } } });
       }
       return schema;
     }
     return undefined;
-  }, [node, nodeProps.variable]);
+  }, [node, nodeProps.variable, graph]);
 
   useEffect(() => {
     inited.current = true;
@@ -79,69 +83,63 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData, node }) => {
       <div className="switch-mode">
         <Switch unCheckedChildren="脚本模式" checkedChildren="脚本模式" value={!!nodeProps.scripts} onChange={onModeChange} />
       </div>
-      {nodeProps.scripts
-        ? (
-            <div className="nd-form-layout">
-              <div className="form-item">
-                <div className="label-item require">
-                  使用(JS)修改变量节点中的变量值
-                </div>
-                <div className="input-item"><SuperInput className="input-scripts" hideIcon runtime="script" brand="variable" dataType={DataType.Any} value={nodeProps.scripts} onChange={onScriptsChange} /></div>
-              </div>
+      {nodeProps.scripts ? (
+        <div className="nd-form-layout">
+          <div className="form-item">
+            <div className="label-item require">使用(JS)修改变量节点中的变量值</div>
+            <div className="input-item">
+              <SuperInput className="input-scripts" hideIcon runtime="script" brand="variable" dataType={DataType.Any} value={nodeProps.scripts} onChange={onScriptsChange} />
             </div>
-          )
-        : (
-            <div className="nd-form-layout">
-              <div className="form-item">
-                <div className="label-item require">
-                  选择要修改的变量
+          </div>
+        </div>
+      ) : (
+        <div className="nd-form-layout">
+          <div className="form-item">
+            <div className="label-item require">选择要修改的变量</div>
+            <div className="input-item">
+              <SuperInput hideIcon sourceType="variable" brand="variable" dataType={DataType.Any} value={nodeProps.variable} onChange={onVariableChange} />
+            </div>
+          </div>
+          {variableSchema && (
+            <div className="form-item">
+              {variableSchema.type === DataType.Array || variableSchema.type === DataType.Map ? (
+                <div className="actions">
+                  <Radio.Group options={Actions} value={nodeProps.action || "assign"} onChange={onActionChange} />
+                  {variableSchema.type === DataType.Array && (nodeProps.action || "assign") !== "assign" && (
+                    <div className="position">
+                      <Tooltip title="正数从头部开始，负数从尾部开始">
+                        <QuestionCircleOutlined />
+                      </Tooltip>
+                      <span>位置从</span>
+                      <InputNumber size="small" value={nodeProps.at || 0} onChange={onAtChange} />
+                      <span>开始</span>
+                    </div>
+                  )}
                 </div>
-                <div className="input-item"><SuperInput hideIcon sourceType="variable" brand="variable" dataType={DataType.Any} value={nodeProps.variable} onChange={onVariableChange} /></div>
-              </div>
-              {variableSchema && (
-                <div className="form-item">
-                  {(variableSchema.type === DataType.Array || variableSchema.type === DataType.Map)
-                    ? (
-                        <div className="actions">
-                          <Radio.Group options={Actions} value={nodeProps.action || 'assign'} onChange={onActionChange} />
-                          {variableSchema.type === DataType.Array && (nodeProps.action || 'assign') !== 'assign' && (
-                            <div className="position">
-                              <Tooltip title="正数从头部开始，负数从尾部开始">
-                                <QuestionCircleOutlined />
-                              </Tooltip>
-                              <span>位置从</span>
-                              <InputNumber size="small" value={nodeProps.at || 0} onChange={onAtChange} />
-                              <span>开始</span>
-                            </div>
-                          )}
-                        </div>
-                      )
-                    : (
-                        <div className="actions">
-                          <Radio.Group options={Actions.slice(0, 1)} value="assign" />
-                        </div>
-                      )}
-                  <div className="input-item">
-                    {nodeProps.action !== 'remove'
-                      ? <SchemaValueForm variant="filled" schema={variableSchema} value={nodeData.meta.valueReference?.value} onChange={onVariableValueChange} />
-                      : variableSchema.type === DataType.Array
-                        ? (
-                            <div className="remove-targets">
-                              <div className="title">输入要移除元素的个数：</div>
-                              <InputNumber style={{ width: '100%' }} value={nodeProps.removeTargets || 1 as any} onChange={onRemoveLengthChange} />
-                            </div>
-                          )
-                        : (
-                            <div className="remove-targets">
-                              <div className="title">添加要移除元素的KEY：</div>
-                              <KeyValues hideLabel valuePlaceholder="key" value={nodeProps.removeTargets as any} onChange={onRemoveKeysChange} />
-                            </div>
-                          )}
-                  </div>
+              ) : (
+                <div className="actions">
+                  <Radio.Group options={Actions.slice(0, 1)} value="assign" />
                 </div>
               )}
+              <div className="input-item">
+                {nodeProps.action !== "remove" ? (
+                  <SchemaValueForm variant="filled" schema={variableSchema} value={nodeData.meta.valueReference?.value} onChange={onVariableValueChange} />
+                ) : variableSchema.type === DataType.Array ? (
+                  <div className="remove-targets">
+                    <div className="title">输入要移除元素的个数：</div>
+                    <InputNumber style={{ width: "100%" }} value={nodeProps.removeTargets || (1 as any)} onChange={onRemoveLengthChange} />
+                  </div>
+                ) : (
+                  <div className="remove-targets">
+                    <div className="title">添加要移除元素的KEY：</div>
+                    <KeyValues hideLabel valuePlaceholder="key" value={nodeProps.removeTargets as any} onChange={onRemoveKeysChange} />
+                  </div>
+                )}
+              </div>
             </div>
           )}
+        </div>
+      )}
     </div>
   );
 };

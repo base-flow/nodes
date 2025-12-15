@@ -1,38 +1,37 @@
-import type { INodeConfig } from '@baseflow/react';
-import type { DSLProps, NodeProps } from './model';
-import { DataType, NodeType, ValueSource } from '@baseflow/react';
-import NodeInputPanel from './components/NodeInputPanel';
-import PKG from './package.json';
+import type { INodeConfig } from "@baseflow/react";
+import { DataType, NodeType, ValueSource } from "@baseflow/react";
+import NodeInputPanel from "./components/NodeInputPanel";
+import type { DSLProps, NodeProps } from "./model";
+import PKG from "./package.json";
 
 const config: INodeConfig<NodeProps, DSLProps> = {
   version: PKG.version,
   type: NodeType.VariableUpdate,
-  icon: '',
-  desc: '变量修改：通过本节点可以修改[变量定义]节点中的变量值',
+  icon: "",
+  desc: "变量修改：通过本节点可以修改[变量定义]节点中的变量值",
   NodeInputPanel,
   backend: {},
   defaultData() {
     return {
       meta: {
-        name: '变量修改',
+        name: "变量修改",
         width: 250,
         height: 68,
       },
-      props: {
-      },
+      props: {},
     };
   },
   validate({ nodeData }) {
     if (!nodeData.props.scripts && !nodeData.props.variable) {
-      return 'Required!';
+      return "Required!";
     }
     if (nodeData.props.scripts) {
       if (!nodeData.props.scripts.text) {
-        return 'Required!';
+        return "Required!";
       }
     } else {
       if (!nodeData.props.variable!.text) {
-        return 'Required!';
+        return "Required!";
       }
     }
   },
@@ -44,7 +43,7 @@ const config: INodeConfig<NodeProps, DSLProps> = {
       } else {
         const { action, at } = props;
         const variable = props.variable?.text;
-        const removeTargets = props.removeTargets && (typeof props.removeTargets === 'number' ? props.removeTargets : props.removeTargets.map(item => item.value));
+        const removeTargets = props.removeTargets && (typeof props.removeTargets === "number" ? props.removeTargets : props.removeTargets.map((item) => item.value));
         return { variable, action, at, removeTargets };
       }
     },
@@ -55,7 +54,7 @@ const config: INodeConfig<NodeProps, DSLProps> = {
         variable: variable ? { type: DataType.Any, source: ValueSource.Variable, text: variable } : undefined,
         action,
         at,
-        removeTargets: removeTargets && (typeof removeTargets === 'number' ? removeTargets : removeTargets.map(item => ({ value: item }))),
+        removeTargets: removeTargets && (typeof removeTargets === "number" ? removeTargets : removeTargets.map((item) => ({ value: item }))),
       };
     },
   },

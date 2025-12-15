@@ -1,21 +1,23 @@
-import type { INodeInputPanel, SchemaModel, SchemaValue } from '@baseflow/react';
-import type { NodeProps } from '../model';
-import { DataType, SchemaValueForm, useEvent } from '@baseflow/react';
-import { memo } from 'react';
+import type { INodeInputPanel, SchemaModel, SchemaValue } from "@baseflow/react";
+import { DataType, SchemaValueForm, useEvent, useNode } from "@baseflow/react";
+import { memo } from "react";
+import type { NodeProps } from "../model";
 
 const inputSchema: SchemaModel = {
-  name: 'request',
-  label: 'Request',
-  type: 'ͼOBJECTͼ',
+  name: "request",
+  label: "Request",
+  type: "ͼOBJECTͼ",
   children: [
-    { name: 'url', type: 'ͼSTRINGͼ' },
-    { name: 'method', type: 'ͼSTRINGͼ' },
-    { name: 'https', type: DataType.Bool },
-    { name: 'data', type: DataType.Date },
+    { name: "url", type: "ͼSTRINGͼ" },
+    { name: "method", type: "ͼSTRINGͼ" },
+    { name: "https", type: DataType.Bool },
+    { name: "data", type: DataType.Date },
   ],
 };
 
-const Component: INodeInputPanel<NodeProps> = ({ nodeData, node }) => {
+const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
+  "use no memo";
+  const { node } = useNode(nodeData.id);
   const onInputChange = useEvent((input: SchemaValue | undefined) => {
     node.updateProps({ input });
   });
