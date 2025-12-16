@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/style/noNestedTernary: <use no memo> */
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import type { INodeInputPanel, SchemaValue, ValueConfig } from "@baseflow/react";
 import { DataType, KeyValues, SchemaValueForm, SuperInput, useEvent, useGraph, useNode, ValueSource } from "@baseflow/react";
