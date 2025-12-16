@@ -6,5 +6,9 @@
     "name": "流程结束",
     "icon": "",
     "desc": "流程结束：流程正常执行完成，可以设置返回数据"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "rollup -c ../../../rollup.config.js"
   }
 }

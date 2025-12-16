@@ -1,10 +1,15 @@
 {
   "name": "@baseflow-nodes/flow",
   "version": "1.0.0",
+  "type": "module",
   "baseflow": {
     "type": "Flow",
     "name": "流程",
     "icon": "",
     "desc": "流程：定义一个独立的流程"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "rollup -c ../../../rollup.config.js"
   }
 }

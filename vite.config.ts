@@ -1,4 +1,5 @@
 import react from "@vitejs/plugin-react";
+import externalGlobals from "rollup-plugin-external-globals";
 import { defineConfig } from "vite";
 import pluginExternal from "vite-plugin-external";
 
@@ -20,4 +21,11 @@ export default defineConfig({
     }),
     pluginExternal(cdnExternals),
   ].filter(Boolean),
+  build: {
+    minify: false,
+    cssMinify: false,
+    rollupOptions: {
+      plugins: [externalGlobals(cdnExternals)],
+    },
+  },
 });
