@@ -1,15 +1,18 @@
 import type { INodeConfig } from "@baseflow/react";
-import { NodeType } from "@baseflow/react";
+import { getLocale, NodeType } from "@baseflow/react";
 import NodeInputPanel from "./components/NodeInputPanel";
 import type { NodeProps } from "./model";
 import PKG from "./package.json";
 import UserManual from "./UserManual";
 
+const META = PKG.baseflow as { [key: string]: string };
+const locale = getLocale();
+
 const config: INodeConfig<NodeProps> = {
   version: PKG.version,
   type: NodeType.Task,
-  icon: "",
-  desc: "HTTP请求：通过置请求参数发送HTTP请求，并输出响应数据",
+  icon: META.icon,
+  desc: META[locale ? `${locale}_desc` : "desc"],
   NodeInputPanel,
   NodeOutputPanel: {
     editable: true,
@@ -27,7 +30,7 @@ const config: INodeConfig<NodeProps> = {
   defaultData(graph) {
     return {
       meta: {
-        name: "发送HTTP请求",
+        name: META[locale ? `${locale}_name` : "name"],
         width: 250,
         height: 68,
         outputSchema: {

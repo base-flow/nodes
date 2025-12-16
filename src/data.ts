@@ -1,6 +1,152 @@
 import type { INodeConfig, JsonDSL } from "@baseflow/react";
 import { BaseWidgets } from "@baseflow/react";
+import BranchNode from "./_nodes/branch/package.json";
+import BreakNode from "./_nodes/break/package.json";
+import ChoiceNode from "./_nodes/choice/package.json";
+import ContinueNode from "./_nodes/continue/package.json";
+import EndNode from "./_nodes/end/package.json";
+import FlowNode from "./_nodes/flow/package.json";
+import ForeachNode from "./_nodes/foreach/package.json";
+import HttpNode from "./_nodes/http/package.json";
+import ReturnNode from "./_nodes/return/package.json";
+import StartNode from "./_nodes/start/package.json";
+import TaskNode from "./_nodes/task/package.json";
+import TriggerWebhookNode from "./_nodes/trigger-webhook/package.json";
+import TryCatchNode from "./_nodes/try-catch/package.json";
+import VariableNode from "./_nodes/variable/package.json";
+import VariableUpdateNode from "./_nodes/variable-update/package.json";
 import type { IFLow } from "./entity";
+
+const DevNodes: {
+  [name: string]: {
+    type: string;
+    name: string;
+    icon: string;
+    desc: string;
+    dsl: string;
+  };
+} = {
+  [FlowNode.name]: { ...FlowNode.baseflow, dsl: "" },
+  [StartNode.name]: { ...StartNode.baseflow, dsl: "" },
+  [EndNode.name]: { ...EndNode.baseflow, dsl: "" },
+  [TriggerWebhookNode.name]: {
+    ...TriggerWebhookNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/trigger-webhook" }],
+      sources: { "@baseflow-nodes/trigger-webhook": "@baseflow-nodes/trigger-webhook@*" },
+    }),
+  },
+  [ReturnNode.name]: {
+    ...ReturnNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/return" }],
+      sources: { "@baseflow-nodes/return": "@baseflow-nodes/return@*" },
+    }),
+  },
+  [VariableNode.name]: {
+    ...VariableNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/variable" }],
+      sources: { "@baseflow-nodes/variable": "@baseflow-nodes/variable@*" },
+    }),
+  },
+  [VariableUpdateNode.name]: {
+    ...VariableUpdateNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/variable-update" }],
+      sources: { "@baseflow-nodes/variable-update": "@baseflow-nodes/variable-update@*" },
+    }),
+  },
+  [TryCatchNode.name]: {
+    ...TryCatchNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/try-catch" }],
+      sources: { "@baseflow-nodes/try-catch": "@baseflow-nodes/try-catch@*" },
+    }),
+  },
+  [ChoiceNode.name]: {
+    ...ChoiceNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [
+        { tag: "@baseflow-nodes/choice", id: "choice1", childrenIds: ["branch1", "branch2"] },
+        { tag: "@baseflow-nodes/branch", id: "branch1", parentId: "choice1" },
+        { tag: "@baseflow-nodes/branch", id: "branch2", parentId: "choice1" },
+      ],
+      sources: {
+        "@baseflow-nodes/choice": "@baseflow-nodes/choice@*",
+        "@baseflow-nodes/branch": "@baseflow-nodes/branch@*",
+      },
+    }),
+  },
+  [BranchNode.name]: {
+    ...BranchNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/branch" }],
+      sources: { "@baseflow-nodes/branch": "@baseflow-nodes/branch@*" },
+    }),
+  },
+  [ForeachNode.name]: {
+    ...ForeachNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/foreach" }],
+      sources: { "@baseflow-nodes/foreach": "@baseflow-nodes/foreach@*" },
+    }),
+  },
+  [ContinueNode.name]: {
+    ...ContinueNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/continue" }],
+      sources: { "@baseflow-nodes/continue": "@baseflow-nodes/continue@*" },
+    }),
+  },
+  [BreakNode.name]: {
+    ...BreakNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/break" }],
+      sources: { "@baseflow-nodes/break": "@baseflow-nodes/break@*" },
+    }),
+  },
+  [HttpNode.name]: {
+    ...HttpNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/http" }],
+      sources: { "@baseflow-nodes/http": "@baseflow-nodes/http@*" },
+    }),
+  },
+  [TaskNode.name]: {
+    ...TaskNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/task" }],
+      sources: { "@baseflow-nodes/task": "@baseflow-nodes/task@*" },
+    }),
+  },
+};
+
+export function fetchNodes() {
+  return Object.values(DevNodes).slice(3);
+}
+
+function nodeSourceToUrl(source: string) {
+  const arr = source.split(/[/@]/);
+  const name = source.substring(0, source.lastIndexOf("@"));
+  if (arr[1] === "baseflow-nodes" && DevNodes[name]) {
+    return `/src/_nodes/${arr[2]}/index.ts`;
+  }
+  return source;
+}
+
+export function onImportNode(source: string): Promise<INodeConfig> {
+  const url = nodeSourceToUrl(source);
+  return import(/* @vite-ignore */ url).then(
+    (mod) => {
+      return mod.default;
+    },
+    (err) => {
+      BaseWidgets.message.error(err.message);
+      throw err;
+    },
+  );
+}
 
 function fetchFlow(): JsonDSL {
   const graphContent = localStorage.getItem("baseflow-dsl");
@@ -57,52 +203,3 @@ export const MockFlow: IFLow = {
   released: true,
   flow: fetchFlow(),
 };
-
-const devNodes: { [name: string]: boolean } = {
-  "@baseflow-nodes/flow@1.0.0": true,
-  "@baseflow-nodes/start@1.0.0": true,
-  "@baseflow-nodes/end@1.0.0": true,
-  "@baseflow-nodes/return@1.0.0": true,
-  "@baseflow-nodes/return@latest": true,
-  "@baseflow-nodes/http@1.0.0": true,
-  "@baseflow-nodes/http@latest": true,
-  "@baseflow-nodes/choice@1.0.0": true,
-  "@baseflow-nodes/branch@1.0.0": true,
-  "@baseflow-nodes/choice@latest": true,
-  "@baseflow-nodes/branch@latest": true,
-  "@baseflow-nodes/foreach@1.0.0": true,
-  "@baseflow-nodes/foreach@latest": true,
-  "@baseflow-nodes/task@1.0.0": true,
-  "@baseflow-nodes/variable@1.0.0": true,
-  "@baseflow-nodes/variable@latest": true,
-  "@baseflow-nodes/variable-update@1.0.0": true,
-  "@baseflow-nodes/variable-update@latest": true,
-  "@baseflow-nodes/continue@1.0.0": true,
-  "@baseflow-nodes/continue@latest": true,
-  "@baseflow-nodes/break@1.0.0": true,
-  "@baseflow-nodes/break@latest": true,
-  "@baseflow-nodes/try-catch@1.0.0": true,
-  "@baseflow-nodes/try-catch@latest": true,
-  "@baseflow-nodes/trigger-webhook@1.0.0": true,
-  "@baseflow-nodes/trigger-webhook@latest": true,
-};
-
-function nodeSourceToUrl(source: string) {
-  if (devNodes[source]) {
-    return `/src/_nodes/${source.split(/[/@]/)[2]}/index.ts`;
-  }
-  return source;
-}
-
-export function onImportNode(source: string): Promise<INodeConfig> {
-  const url = nodeSourceToUrl(source);
-  return import(/* @vite-ignore */ url).then(
-    (mod) => {
-      return mod.default;
-    },
-    (err) => {
-      BaseWidgets.message.error(err.message);
-      throw err;
-    },
-  );
-}

@@ -1,21 +1,24 @@
 import type { INodeConfig } from "@baseflow/react";
-import { DataType, FlowErrors, NodeType } from "@baseflow/react";
+import { DataType, FlowErrors, getLocale, NodeType } from "@baseflow/react";
 import NodeInputPanel from "./components/NodeInputPanel";
 import type { DSLProps, NodeProps } from "./model";
 import { DefaultHeaders } from "./model";
 import PKG from "./package.json";
 
+const META = PKG.baseflow as { [key: string]: string };
+const locale = getLocale();
+
 const config: INodeConfig<NodeProps, DSLProps> = {
   version: PKG.version,
   type: NodeType.Trigger,
-  icon: "",
-  desc: "webhook触发器：让流程能被指定的Http请求触发",
+  icon: META.icon,
+  desc: META[locale ? `${locale}_desc` : "desc"],
   NodeInputPanel,
   backend: {},
   defaultData() {
     return {
       meta: {
-        name: "webhook",
+        name: META[locale ? `${locale}_name` : "name"],
         width: 80,
         height: 68,
         outputSchema: {

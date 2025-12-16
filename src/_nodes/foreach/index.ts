@@ -1,20 +1,23 @@
 import type { INodeConfig, IValueSource } from "@baseflow/react";
-import { DataType, NodeType, ValueSource } from "@baseflow/react";
+import { DataType, getLocale, NodeType, ValueSource } from "@baseflow/react";
 import NodeInputPanel from "./components/NodeInputPanel";
 import type { DSLProps, NodeProps } from "./model";
 import PKG from "./package.json";
 
+const META = PKG.baseflow as { [key: string]: string };
+const locale = getLocale();
+
 const config: INodeConfig<NodeProps, DSLProps> = {
   version: PKG.version,
   type: NodeType.Loop,
-  icon: "",
-  desc: "Foreach：通过指定一个迭代源来循环执行子节点",
+  icon: META.icon,
+  desc: META[locale ? `${locale}_desc` : "desc"],
   NodeInputPanel,
   backend: {},
   defaultData() {
     return {
       meta: {
-        name: "迭代Foreach",
+        name: META[locale ? `${locale}_name` : "name"],
         width: 250,
         height: 68,
       },

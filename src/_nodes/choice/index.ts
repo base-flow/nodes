@@ -1,18 +1,21 @@
 import type { INodeConfig } from "@baseflow/react";
-import { NodeType } from "@baseflow/react";
+import { getLocale, NodeType } from "@baseflow/react";
 import type { NodeProps } from "./model";
 import PKG from "./package.json";
+
+const META = PKG.baseflow as { [key: string]: string };
+const locale = getLocale();
 
 const config: INodeConfig<NodeProps> = {
   version: PKG.version,
   type: NodeType.Choice,
-  icon: "",
-  desc: "条件选择：可添加多个[条件分支]，通过条件判断来控制分支执行",
+  icon: META.icon,
+  desc: META[locale ? `${locale}_desc` : "desc"],
   backend: {},
   defaultData(graph) {
     return {
       meta: {
-        name: "条件选择",
+        name: META[locale ? `${locale}_name` : "name"],
         width: 250,
         height: 68,
       },

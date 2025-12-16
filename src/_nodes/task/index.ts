@@ -1,18 +1,21 @@
 import type { INodeConfig } from "@baseflow/react";
-import { DataType, NodeType } from "@baseflow/react";
+import { DataType, getLocale, NodeType } from "@baseflow/react";
 import type { NodeProps } from "./model";
 import PKG from "./package.json";
+
+const META = PKG.baseflow as { [key: string]: string };
+const locale = getLocale();
 
 const config: INodeConfig<NodeProps> = {
   version: PKG.version,
   type: NodeType.Task,
-  icon: "",
-  desc: "Task任务",
+  icon: META.icon,
+  desc: META[locale ? `${locale}_desc` : "desc"],
   backend: {},
   defaultData(graph) {
     return {
       meta: {
-        name: "Task任务",
+        name: META[locale ? `${locale}_name` : "name"],
         width: 250,
         height: 68,
         outputSchema: { name: "output", type: DataType.Bool },

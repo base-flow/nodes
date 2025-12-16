@@ -1,4 +1,10 @@
 {
   "name": "@baseflow-nodes/choice",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "baseflow": {
+    "type": "Choice",
+    "name": "条件选择",
+    "icon": "",
+    "desc": "条件选择：可添加多个[条件分支]，通过条件判断来控制分支执行"
+  }
 }

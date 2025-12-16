@@ -1,18 +1,21 @@
 import type { INodeConfig } from "@baseflow/react";
-import { NodeType } from "@baseflow/react";
+import { getLocale, NodeType } from "@baseflow/react";
 import type { NodeProps } from "./model";
 import PKG from "./package.json";
+
+const META = PKG.baseflow as { [key: string]: string };
+const locale = getLocale();
 
 const config: INodeConfig<NodeProps> = {
   version: PKG.version,
   type: NodeType.Break,
-  icon: "",
-  desc: "Break循环：放置于[循环]节点中，退出整个循环",
+  icon: META.icon,
+  desc: META[locale ? `${locale}_desc` : "desc"],
   backend: {},
   defaultData(graph) {
     return {
       meta: {
-        name: "Break循环",
+        name: META[locale ? `${locale}_name` : "name"],
         width: 250,
         height: 68,
       },

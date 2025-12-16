@@ -1,4 +1,10 @@
 {
   "name": "@baseflow-nodes/http",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "baseflow": {
+    "type": "Task",
+    "name": "HTTP请求",
+    "icon": "",
+    "desc": "HTTP请求：通过置请求参数发送HTTP请求，并输出响应数据"
+  }
 }

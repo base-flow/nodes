@@ -1,4 +1,10 @@
 {
   "name": "@baseflow-nodes/trigger-webhook",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "baseflow": {
+    "type": "Trigger",
+    "name": "webhook触发器",
+    "icon": "",
+    "desc": "webhook触发器：让流程能被指定的Http请求触发"
+  }
 }
