@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "baseflow": {
     "type": "VariableUpdate",
-    "name": "变量修改",
     "icon": "",
-    "desc": "变量修改：通过本节点可以修改[变量定义]节点中的变量值"
+    "name": "VariableUpdate",
+    "desc": "VariableUpdate：Modifies variable values in the [Variable Definition] node.",
+    "zh-CN_name": "变量修改",
+    "zh-CN_desc": "变量修改：通过本节点可以修改[变量定义]节点中的变量值."
   }
 }

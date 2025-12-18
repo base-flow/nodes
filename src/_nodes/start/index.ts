@@ -11,7 +11,7 @@ const config: INodeConfig<NodeProps> = {
   version: PKG.version,
   type: NodeType.Start,
   icon: META.icon,
-  desc: META[locale ? `${locale}_desc` : "desc"],
+  desc: META[locale ? `${locale}_desc` : "desc"] || META.desc,
   NodeInputPanel,
   backend: {
     node: "",
@@ -19,7 +19,7 @@ const config: INodeConfig<NodeProps> = {
   defaultData() {
     return {
       meta: {
-        name: META[locale ? `${locale}_name` : "name"],
+        name: META[locale ? `${locale}_name` : "name"] || META.name,
         width: 250,
         height: 68,
       },

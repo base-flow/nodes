@@ -1,5 +1,5 @@
 import type { INodeConfig, JsonDSL } from "@baseflow/react";
-import { BaseWidgets } from "@baseflow/react";
+import { BaseWidgets, getLocale } from "@baseflow/react";
 import BranchNode from "./_nodes/branch/package.json";
 import BreakNode from "./_nodes/break/package.json";
 import ChoiceNode from "./_nodes/choice/package.json";
@@ -24,6 +24,7 @@ const DevNodes: {
     icon: string;
     desc: string;
     dsl: string;
+    [key: string]: string;
   };
 } = {
   [FlowNode.name]: { ...FlowNode.baseflow, dsl: "" },
@@ -122,8 +123,20 @@ const DevNodes: {
   },
 };
 
-export function fetchNodes() {
-  return Object.values(DevNodes).slice(3);
+export function fetchNodes(): { type: string; name: string; icon: string; desc: string; dsl: string }[] {
+  const locale = getLocale();
+  return Object.values(DevNodes)
+    .slice(3)
+    .map((META) => {
+      const { type, icon, dsl } = META;
+      return {
+        type,
+        icon,
+        dsl,
+        name: META[locale ? `${locale}_name` : "name"] || META.name,
+        desc: META[locale ? `${locale}_desc` : "desc"] || META.desc,
+      };
+    });
 }
 
 function nodeSourceToUrl(source: string) {

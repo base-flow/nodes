@@ -10,12 +10,12 @@ const config: INodeConfig<NodeProps> = {
   version: PKG.version,
   type: NodeType.Break,
   icon: META.icon,
-  desc: META[locale ? `${locale}_desc` : "desc"],
+  desc: META[locale ? `${locale}_desc` : "desc"] || META.desc,
   backend: {},
   defaultData(graph) {
     return {
       meta: {
-        name: META[locale ? `${locale}_name` : "name"],
+        name: META[locale ? `${locale}_name` : "name"] || META.name,
         width: 250,
         height: 68,
       },

@@ -12,13 +12,13 @@ const config: INodeConfig<NodeProps, DSLProps> = {
   version: PKG.version,
   type: NodeType.Trigger,
   icon: META.icon,
-  desc: META[locale ? `${locale}_desc` : "desc"],
+  desc: META[locale ? `${locale}_desc` : "desc"] || META.desc,
   NodeInputPanel,
   backend: {},
   defaultData() {
     return {
       meta: {
-        name: META[locale ? `${locale}_name` : "name"],
+        name: META[locale ? `${locale}_name` : "name"] || META.name,
         width: 80,
         height: 68,
         outputSchema: {
