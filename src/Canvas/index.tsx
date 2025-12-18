@@ -1,6 +1,6 @@
 import type { CreatorPayload, GraphData, IGraph, IGraphOptions, INodeData } from "@baseflow/react";
-import { DslTools, Flow, HistoryTools, useEvent } from "@baseflow/react";
-import { Modal, message, notification, Spin } from "antd";
+import { DslTools, Flow, getLocale, HistoryTools, useEvent } from "@baseflow/react";
+import { Modal, message, notification, Select, Spin } from "antd";
 import type { FC } from "react";
 import { memo, useCallback, useState } from "react";
 import type { IFLow } from "../entity";
@@ -9,6 +9,7 @@ import { GraphHooks } from "./GraphHooks";
 import styles from "./index.module.scss";
 
 const Component: FC<{ data: IFLow }> = (props) => {
+  const local = getLocale() || "en-US";
   const [graph, setGraph] = useState<IGraph>();
   const [initGraphData] = useState<GraphData>(() => DslTools.jsonToGraph(props.data.flow));
   const [graphOptions] = useState<IGraphOptions>({});
@@ -47,7 +48,14 @@ const Component: FC<{ data: IFLow }> = (props) => {
       <div className={`${styles.Canvas}__hd`}>
         <div className="left">
           <div className="title">
-            <span>New Flow</span>
+            <Select
+              value={local}
+              options={[
+                { value: "en-US", label: "English" },
+                { value: "zh-CN", label: "中文简体" },
+                { value: "zh-TW", label: "中文繁體" },
+              ]}
+            />
           </div>
         </div>
         <div className="right">{graph && <HistoryTools graph={graph} />}</div>

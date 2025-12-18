@@ -4,7 +4,7 @@ import { DatePicker, DescMD, StringInput, StringSelect, TimePicker } from "@base
 import { Button, ConfigProvider, Modal, message, Segmented, Spin, Switch } from "antd";
 import { useEffect } from "react";
 import Canvas from "./Canvas";
-import { MockFlow } from "./data";
+import { MockFlow } from "./MockData";
 
 const widgets: Partial<IBaseWidgets> = {
   Button: Button as any,
@@ -74,7 +74,7 @@ function App() {
   }, []);
   return (
     <ConfigProvider>
-      <FlowConfigProvider widgets={widgets} monacoEditorUrl="/monaco/index.html" expressionUtils={expressionUtils}>
+      <FlowConfigProvider locale="zh-TW" widgets={widgets} monacoEditorUrl="/monaco/index.html" expressionUtils={expressionUtils}>
         <Canvas data={MockFlow} />
       </FlowConfigProvider>
     </ConfigProvider>

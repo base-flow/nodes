@@ -1,5 +1,5 @@
 import { type FC, useState } from "react";
-import { fetchNodes } from "../data";
+import { fetchNodes } from "../MockData";
 import styles from "./index.module.scss";
 
 const DefaultIcon =

@@ -20,8 +20,9 @@
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "@baseflow/react": "^0.0.23",
-    "@baseflow/widgets": "^0.0.9"
+    "@baseflow/react": "^0.0.27",
+    "@baseflow/widgets": "^0.0.12",
+    "antd": "^6.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.12.0",
