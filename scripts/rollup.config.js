@@ -12,8 +12,42 @@ import del from "rollup-plugin-delete";
 import externalGlobals from "rollup-plugin-external-globals";
 import postcss from "rollup-plugin-postcss";
 
-const PUBLIC_DIR = path.join(__dirname, "../public/nodes");
-fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+const FilterPackageFields = {
+  scripts: true,
+  dependencies: true,
+  devDependencies: true,
+  peerDependencies: true,
+};
+const SrcDir = process.cwd();
+const SrcDirName = path.basename(SrcDir);
+const SrcPackageFile = path.join(SrcDir, "package.json");
+const SrcPackageContent = fs.readFileSync(SrcPackageFile, "utf-8");
+const SrcPackageJson = JSON.parse(SrcPackageContent);
+const DistPackageJson = {};
+for (const key in SrcPackageJson) {
+  if (!FilterPackageFields[key]) {
+    DistPackageJson[key] = SrcPackageJson[key];
+  }
+}
+const NodeExecutor = SrcPackageJson.executor?.node;
+if (NodeExecutor) {
+  const arr = NodeExecutor.split("@");
+  const version = arr.pop();
+  DistPackageJson.dependencies = {
+    [arr.join("@")]: version,
+  };
+}
+const DistDir = path.join(import.meta.dirname, "../public/nodes", SrcDirName);
+fs.mkdirSync(DistDir, { recursive: true });
+const DistPackageFile = path.join(DistDir, "package.json");
+fs.writeFileSync(DistPackageFile, JSON.stringify(DistPackageJson, null, 2));
+
+// fs.copyFileSync(SrcPackageFile, DistPackageFile);
+// replaceInFileSync({
+//   files: DistPackageFile,
+//   from: /"(scripts|devDependencies|peerDependencies)":\s*{[^}]+?}/,
+//   to: `"scripts": {}`,
+// });
 
 const extensions = [".js", ".ts", ".tsx", ".jsx"];
 const cdnExternals = {
@@ -29,7 +63,7 @@ const cdnExternals = {
 export default {
   input: "index.ts",
   output: {
-    file: "public/index.js",
+    file: path.join(DistDir, "index.js"),
     format: "esm",
     sourcemap: false,
   },

@@ -1,10 +1,13 @@
 {
   "name": "@baseflow-nodes/task",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "baseflow": {
     "type": "Task",
     "name": "Task任务",
     "icon": "",
     "desc": "Task任务: 测试任务"
+  },
+  "executor": {
+    "node": "@baseflow-executors/task@0.0.1"
   }
 }

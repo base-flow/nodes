@@ -1,11 +1,12 @@
 import type { INodeConfig } from "@baseflow/react";
-import { DataType, FlowErrors, getLocale, NodeType } from "@baseflow/react";
+import { DataType, FlowErrors, getLocale, getNodeDefaultSize, NodeType } from "@baseflow/react";
 import NodeInputPanel from "./components/NodeInputPanel";
 import type { DSLProps, NodeProps } from "./model";
 import { DefaultHeaders } from "./model";
 import PKG from "./package.json";
 
 const META = PKG.baseflow as { [key: string]: string };
+const NodeSize = getNodeDefaultSize();
 const locale = getLocale();
 
 const config: INodeConfig<NodeProps, DSLProps> = {
@@ -14,13 +15,12 @@ const config: INodeConfig<NodeProps, DSLProps> = {
   icon: META.icon,
   desc: META[locale ? `${locale}_desc` : "desc"] || META.desc,
   NodeInputPanel,
-  backend: {},
+  executor: PKG.executor,
   defaultData() {
     return {
       meta: {
         name: META[locale ? `${locale}_name` : "name"] || META.name,
-        width: 80,
-        height: 68,
+        ...NodeSize,
         outputSchema: {
           name: "output",
           type: DataType.Object,

@@ -10,8 +10,7 @@
   "executor": {
     "node": "@baseflow-executors/branch@0.0.1"
   },
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "build": "rollup -c ../../../scripts/rollup.config.js"
+  "dependencies": {
+    "@baseflow-executors/branch": "0.0.1"
   }
 }

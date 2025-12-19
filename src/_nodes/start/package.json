@@ -1,6 +1,6 @@
 {
   "name": "@baseflow-nodes/start",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "baseflow": {
     "type": "Start",
     "icon": "",
@@ -13,8 +13,11 @@
     "ja-JP_name": "プロセス開始",
     "ja-JP_desc": "プロセス開始：実行の開始点です。入力パラメータと出力データ構造を設定します."
   },
+  "executor": {
+    "node": "@baseflow-executors/start@0.0.1"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "rollup -c ../../../rollup.config.js"
+    "build": "rollup -c ../../../scripts/rollup.config.js"
   }
 }
