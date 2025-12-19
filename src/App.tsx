@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import Canvas from "./Canvas";
 import { MockFlow } from "./MockData";
 
+const Locale = localStorage.getItem("baseflow-locale") || "";
+
 const widgets: Partial<IBaseWidgets> = {
   Button: Button as any,
   Spin: Spin as any,
@@ -74,7 +76,7 @@ function App() {
   }, []);
   return (
     <ConfigProvider>
-      <FlowConfigProvider locale="zh-TW" widgets={widgets} monacoEditorUrl="/monaco/index.html" expressionUtils={expressionUtils}>
+      <FlowConfigProvider locale={Locale} widgets={widgets} monacoEditorUrl="/monaco/index.html" expressionUtils={expressionUtils}>
         <Canvas data={MockFlow} />
       </FlowConfigProvider>
     </ConfigProvider>

@@ -9,7 +9,7 @@ import { GraphHooks } from "./GraphHooks";
 import styles from "./index.module.scss";
 
 const Component: FC<{ data: IFLow }> = (props) => {
-  const local = getLocale() || "en-US";
+  const locale = getLocale();
   const [graph, setGraph] = useState<IGraph>();
   const [initGraphData] = useState<GraphData>(() => DslTools.jsonToGraph(props.data.flow));
   const [graphOptions] = useState<IGraphOptions>({});
@@ -49,12 +49,16 @@ const Component: FC<{ data: IFLow }> = (props) => {
         <div className="left">
           <div className="title">
             <Select
-              value={local}
+              value={locale}
               options={[
                 { value: "en-US", label: "English" },
                 { value: "zh-CN", label: "中文简体" },
                 { value: "zh-TW", label: "中文繁體" },
               ]}
+              onChange={(locale) => {
+                localStorage.setItem("baseflow-locale", locale);
+                window.location.reload();
+              }}
             />
           </div>
         </div>
