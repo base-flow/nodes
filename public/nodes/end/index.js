@@ -67,18 +67,23 @@ const Component = ({
 };
 var NodeInputPanel = /*#__PURE__*/React.memo(Component);
 
-var version = "1.0.0";
+var version = "0.0.1";
 var baseflow = {
 	type: "End",
 	name: "流程结束",
 	icon: "",
 	desc: "流程结束：流程正常执行完成，可以设置返回数据"
 };
+var executor = {
+	node: "@baseflow-executors/end@0.0.1"
+};
 var PKG = {
 	version: version,
-	baseflow: baseflow};
+	baseflow: baseflow,
+	executor: executor};
 
 const META = PKG.baseflow;
+const NodeSize = Baseflow.getNodeDefaultSize();
 const locale = Baseflow.getLocale();
 const config = {
   version: PKG.version,
@@ -86,13 +91,12 @@ const config = {
   icon: META.icon,
   desc: META[locale ? `${locale}_desc` : "desc"] || META.desc,
   NodeInputPanel,
-  backend: {},
+  executor: PKG.executor,
   defaultData() {
     return {
       meta: {
         name: META[locale ? `${locale}_name` : "name"] || META.name,
-        width: 250,
-        height: 68,
+        ...NodeSize,
         valueReference: {
           path: "flow"
         }

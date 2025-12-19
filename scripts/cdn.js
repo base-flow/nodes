@@ -61,11 +61,12 @@ await fs.mkdir(PUBLIC_DIR, { recursive: true });
 await copyNpm({ name: "dayjs", files: ["dayjs.min.js"] });
 await copyNpm({ name: "antd", files: ["dist/antd.min.js", "/dist/antd.css"] });
 await copyNpm({ name: "@baseflow/react", files: ["dist/umd/baseflow.js", "dist/umd/baseflow.css"] });
+await copyNpm({ name: "@baseflow/widgets", files: ["dist/umd/index.js"] });
+
 await replaceInFile({
   files: HTML_PAGE,
-  from: [/src=".\/cdn\/dayjs@[^"]+?.js"/, /src=".\/cdn\/antd@[^"]+?.js"/, /src=".\/cdn\/baseflow@[^"]+?.js"/, /src=".\/cdn\/baseflow-widgets@[^"]+?.js"/, /href=".\/cdn\/baseflow@[^"]+?.css"/],
+  from: [/src=".\/cdn\/dayjs@[^"]+?.js"/, /src=".\/cdn\/antd@[^"]+?.js"/, /src=".\/cdn\/@baseflow@react@[^"]+?.js"/, /src=".\/cdn\/@baseflow@widgets@[^"]+?.js"/, /href=".\/cdn\/@baseflow@react@[^"]+?.css"/],
   to: [`src="./cdn/${CDNS["dayjs.js"]}"`, `src="./cdn/${CDNS["antd.js"]}"`, `src="./cdn/${CDNS["@baseflow@react.js"]}"`, `src="./cdn/${CDNS["@baseflow@widgets.js"]}"`, `href="./cdn/${CDNS["@baseflow@react.css"]}"`],
 });
 
-await copyNpm({ name: "@baseflow/widgets", files: ["dist/umd/index.js"] });
 console.log(CDNS);

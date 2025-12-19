@@ -143,7 +143,7 @@ function nodeSourceToUrl(source: string) {
   const arr = source.split(/[/@]/);
   const name = source.substring(0, source.lastIndexOf("@"));
   if (arr[1] === "baseflow-nodes" && DevNodes[name]) {
-    return `/src/_nodes/${arr[2]}/index.ts`;
+    return process.env.NODE_ENV === "production" ? `/nodes/${arr[2]}/index.js` : `/src/_nodes/${arr[2]}/index.ts`;
   }
   return source;
 }

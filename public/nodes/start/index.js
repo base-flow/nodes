@@ -79,7 +79,7 @@ const Component = ({
 };
 var NodeInputPanel = /*#__PURE__*/React.memo(Component);
 
-var version = "1.0.0";
+var version = "0.0.1";
 var baseflow = {
 	type: "Start",
 	icon: "",
@@ -92,11 +92,16 @@ var baseflow = {
 	"ja-JP_name": "プロセス開始",
 	"ja-JP_desc": "プロセス開始：実行の開始点です。入力パラメータと出力データ構造を設定します."
 };
+var executor = {
+	node: "@baseflow-executors/start@0.0.1"
+};
 var PKG = {
 	version: version,
-	baseflow: baseflow};
+	baseflow: baseflow,
+	executor: executor};
 
 const META = PKG.baseflow;
+const NodeSize = Baseflow.getNodeDefaultSize();
 const locale = Baseflow.getLocale();
 const config = {
   version: PKG.version,
@@ -104,15 +109,12 @@ const config = {
   icon: META.icon,
   desc: META[locale ? `${locale}_desc` : "desc"] || META.desc,
   NodeInputPanel,
-  backend: {
-    node: ""
-  },
+  executor: PKG.executor,
   defaultData() {
     return {
       meta: {
         name: META[locale ? `${locale}_name` : "name"] || META.name,
-        width: 250,
-        height: 68
+        ...NodeSize
       },
       props: {}
     };
