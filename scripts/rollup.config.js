@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
@@ -9,6 +11,9 @@ import autoprefixer from "autoprefixer";
 import del from "rollup-plugin-delete";
 import externalGlobals from "rollup-plugin-external-globals";
 import postcss from "rollup-plugin-postcss";
+
+const PUBLIC_DIR = path.join(__dirname, "../public/nodes");
+fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 
 const extensions = [".js", ".ts", ".tsx", ".jsx"];
 const cdnExternals = {
@@ -24,12 +29,12 @@ const cdnExternals = {
 export default {
   input: "index.ts",
   output: {
-    file: "dist/index.js",
+    file: "public/index.js",
     format: "esm",
     sourcemap: false,
   },
   plugins: [
-    del({ targets: "dist" }),
+    del({ targets: "public" }),
     resolve({ extensions, browser: true }),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production"),

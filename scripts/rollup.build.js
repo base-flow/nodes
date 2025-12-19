@@ -21,7 +21,7 @@ const cdnExternals = {
   "@baseflow/widgets": "BaseflowWidgets",
 };
 
-export default function () {
+export default function (packageName) {
   return {
     input: "index.ts",
     output: {
