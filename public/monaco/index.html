@@ -13,7 +13,7 @@
       overflow: hidden;
     }
   </style>
-  <script src="./tsserver.js"></script>
+  <script src="./monaco.js"></script>
   <script src="./monaco-editor/min/vs/loader.js"></script>
   <script>
     require.config({
@@ -26,7 +26,7 @@
         },
       },
     });
-    require(['vs/editor/editor.main'], tsserver.initMonaco);
+    require(['vs/editor/editor.main'], monaco.initMonaco);
   </script>
 </head>
 

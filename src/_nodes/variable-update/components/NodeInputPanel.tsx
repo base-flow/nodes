@@ -1,3 +1,4 @@
+"use no memo";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import type { INodeInputPanel, SchemaValue, ValueConfig } from "@baseflow/react";
 import { DataType, KeyValues, SchemaValueForm, SuperInput, useEvent, useGraph, useNode, ValueSource } from "@baseflow/react";
@@ -14,7 +15,6 @@ const Actions = [
 ];
 
 const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
-  "use no memo";
   const { graph } = useGraph();
   const { node } = useNode(nodeData.id);
   const nodeProps = nodeData.props;
@@ -87,7 +87,7 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
           <div className="form-item">
             <div className="label-item require">使用(JS)修改变量节点中的变量值</div>
             <div className="input-item">
-              <SuperInput className="input-scripts" hideIcon runtime="script" brand="variable" dataType={DataType.Any} value={nodeProps.scripts} onChange={onScriptsChange} />
+              <SuperInput height={100} hideIcon runtime="script" brand="variable" dataType={DataType.Any} value={nodeProps.scripts} onChange={onScriptsChange} />
             </div>
           </div>
         </div>
@@ -123,6 +123,7 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
               <div className="input-item">
                 {nodeProps.action !== "remove" ? (
                   <SchemaValueForm variant="filled" schema={variableSchema} value={nodeData.meta.valueReference?.value} onChange={onVariableValueChange} />
+                  // biome-ignore lint/style/noNestedTernary: <>
                 ) : variableSchema.type === DataType.Array ? (
                   <div className="remove-targets">
                     <div className="title">输入要移除元素的个数：</div>
