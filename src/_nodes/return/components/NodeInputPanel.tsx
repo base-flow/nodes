@@ -1,3 +1,4 @@
+"use no memo";
 import type { INodeInputPanel, SchemaLabelRender, SchemaValue } from "@baseflow/react";
 import { BaseLang, FlowErrors, SchemaValueForm, useEvent, useGraph, useNode } from "@baseflow/react";
 import { Alert, Button } from "antd";
@@ -11,7 +12,6 @@ const returnLabelRender: SchemaLabelRender = (item, parent) => {
 };
 
 const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
-  "use no memo";
   const { graph } = useGraph();
   const { node } = useNode(nodeData.id);
   const returnSchema = graph.getReturnSchema();

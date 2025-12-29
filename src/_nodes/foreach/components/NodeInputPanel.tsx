@@ -1,3 +1,4 @@
+"use no memo";
 import type { INodeInputPanel, SchemaInputPropsRender, SchemaModel, SchemaValue } from "@baseflow/react";
 import { DataType, SchemaValueForm, useEvent, useNode } from "@baseflow/react";
 import { memo } from "react";
@@ -12,7 +13,6 @@ const inputPropsRender: SchemaInputPropsRender = (item) => {
 };
 
 const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
-  "use no memo";
   const { node } = useNode(nodeData.id);
   const onInputChange = useEvent((source: SchemaValue | undefined) => {
     if (source) {

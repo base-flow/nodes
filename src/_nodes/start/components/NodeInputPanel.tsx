@@ -1,3 +1,4 @@
+"use no memo";
 import type { INodeInputPanel, SchemaModel } from "@baseflow/react";
 import { BaseLang, DataType, SchemaModelForm, useEvent, useGraph, useNode } from "@baseflow/react";
 import { Alert } from "antd";
@@ -8,7 +9,6 @@ const defaultInput: SchemaModel = { name: "input", type: DataType.Object, childr
 const defaultReturn: SchemaModel = { name: "return", type: DataType.Object, children: [] };
 
 const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
-  "use no memo";
   const { graph } = useGraph();
   const { node } = useNode(nodeData.id);
   const inputSchema = graph.getInputSchema();

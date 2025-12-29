@@ -9,8 +9,5 @@
   },
   "executor": {
     "node": "@baseflow-executors/end@0.0.1"
-  },
-  "dependencies": {
-    "@baseflow-executors/end": "0.0.1"
   }
 }

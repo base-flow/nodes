@@ -13,6 +13,7 @@ import externalGlobals from "rollup-plugin-external-globals";
 import postcss from "rollup-plugin-postcss";
 
 const FilterPackageFields = {
+  private: true,
   scripts: true,
   dependencies: true,
   devDependencies: true,
@@ -29,14 +30,14 @@ for (const key in SrcPackageJson) {
     DistPackageJson[key] = SrcPackageJson[key];
   }
 }
-const NodeExecutor = SrcPackageJson.executor?.node;
-if (NodeExecutor) {
-  const arr = NodeExecutor.split("@");
-  const version = arr.pop();
-  DistPackageJson.dependencies = {
-    [arr.join("@")]: version,
-  };
-}
+// const NodeExecutor = SrcPackageJson.executor?.node;
+// if (NodeExecutor) {
+//   const arr = NodeExecutor.split("@");
+//   const version = arr.pop();
+//   DistPackageJson.dependencies = {
+//     [arr.join("@")]: version,
+//   };
+// }
 const DistDir = path.join(import.meta.dirname, "../public/nodes", SrcDirName);
 fs.mkdirSync(DistDir, { recursive: true });
 const DistPackageFile = path.join(DistDir, "package.json");
@@ -81,8 +82,8 @@ export default {
       emitFiles: true,
     }),
     postcss({
-      modules: false, // css-module
-      extract: true, // css 文件
+      // modules: false, // css-module
+      extract: false, // css 文件
       minimize: true,
       sourceMap: false,
       url: { maxSize: 10 * 1024 },

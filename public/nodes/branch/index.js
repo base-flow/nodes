@@ -19,7 +19,7 @@ const Component = ({
 };
 var NodeInputPanel = /*#__PURE__*/React.memo(Component);
 
-var version = "0.0.1";
+var version = "0.0.2";
 var baseflow = {
 	type: "Branch",
 	icon: "",

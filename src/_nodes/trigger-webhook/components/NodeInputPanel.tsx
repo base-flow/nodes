@@ -1,7 +1,7 @@
-import { CopyOutlined } from "@ant-design/icons";
+"use no memo";
 import type { INodeInputPanel, SchemaModel } from "@baseflow/react";
 import { DataType, KeyValues, RequiredRule, SchemaModelForm, useEvent, useNode } from "@baseflow/react";
-import { BlurInput, PathToRegexp, StringSelect } from "@baseflow/widgets";
+import { BlurInput, Icons, PathToRegexp, StringSelect } from "@baseflow/widgets";
 import type { FormInstance } from "antd";
 import { Form } from "antd";
 import { memo, useEffect, useRef } from "react";
@@ -53,7 +53,6 @@ function mergeSchema(outputSchema: SchemaModel, data: Partial<{ [key: string]: S
 }
 
 const Component: INodeInputPanel<NodeProps> = ({ nodeData, rebuildKey }) => {
-  "use no memo";
   const { node } = useNode(nodeData.id);
   const nodeProps = nodeData.props;
   const formRef = useRef<FormInstance>(null);
@@ -89,9 +88,17 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData, rebuildKey }) => {
 
   return (
     <div>
-      <Form ref={formRef} key={rebuildKey} className="nd-form" layout="vertical" initialValues={nodeProps} autoComplete="off" onValuesChange={onFormChange}>
+      <Form
+        ref={formRef}
+        key={rebuildKey}
+        className="nd-form"
+        layout="vertical"
+        initialValues={nodeProps}
+        autoComplete="off"
+        onValuesChange={onFormChange}
+      >
         <Form.Item label="监听地址" tooltip="path" name="path" rules={RequiredRule}>
-          <BlurInput allowClear prefix="BaseUrl / " addonAfter={<CopyOutlined />} placeholder="输入规划的url路径" />
+          <BlurInput allowClear prefix="BaseUrl / " addonAfter={<Icons.CopyOutlined />} placeholder="输入规划的url路径" />
         </Form.Item>
         <Form.Item label="监听方法" tooltip="method" name="methods" rules={RequiredRule}>
           <StringSelect block multiple options={MethodOptions} />

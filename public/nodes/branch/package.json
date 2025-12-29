@@ -1,6 +1,6 @@
 {
   "name": "@baseflow-nodes/branch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "baseflow": {
     "type": "Branch",
     "icon": "",
@@ -9,8 +9,5 @@
   },
   "executor": {
     "node": "@baseflow-executors/branch@0.0.1"
-  },
-  "dependencies": {
-    "@baseflow-executors/branch": "0.0.1"
   }
 }

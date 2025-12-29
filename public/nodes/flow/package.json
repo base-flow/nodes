@@ -1,7 +1,6 @@
 {
   "name": "@baseflow-nodes/flow",
   "version": "0.0.1",
-  "type": "module",
   "baseflow": {
     "type": "Flow",
     "name": "流程",
@@ -10,8 +9,5 @@
   },
   "executor": {
     "node": "@baseflow-executors/flow@0.0.1"
-  },
-  "dependencies": {
-    "@baseflow-executors/flow": "0.0.1"
   }
 }

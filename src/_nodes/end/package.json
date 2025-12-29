@@ -1,6 +1,7 @@
 {
   "name": "@baseflow-nodes/end",
   "version": "0.0.1",
+  "private": true,
   "baseflow": {
     "type": "End",
     "name": "流程结束",
@@ -12,6 +13,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "rollup -c ../../../scripts/rollup.config.js"
+    "build": "rollup -c ../../../scripts/rollup.config.js",
+    "publish": "npm publish ../../../public/nodes/end"
   }
 }

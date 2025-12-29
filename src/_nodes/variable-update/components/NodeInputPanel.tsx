@@ -1,7 +1,7 @@
 "use no memo";
-import { QuestionCircleOutlined } from "@ant-design/icons";
 import type { INodeInputPanel, SchemaValue, ValueConfig } from "@baseflow/react";
 import { DataType, KeyValues, SchemaValueForm, SuperInput, useEvent, useGraph, useNode, ValueSource } from "@baseflow/react";
+import { Icons } from "@baseflow/widgets";
 import type { RadioChangeEvent } from "antd";
 import { InputNumber, Radio, Switch, Tooltip } from "antd";
 import { memo, useEffect, useMemo, useRef } from "react";
@@ -22,7 +22,13 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
 
   const onModeChange = useEvent((useScripts: boolean) => {
     if (useScripts) {
-      node.updateProps({ scripts: { type: DataType.Any, source: ValueSource.Expression, text: "" }, variable: undefined, action: undefined, at: undefined, removeTargets: undefined });
+      node.updateProps({
+        scripts: { type: DataType.Any, source: ValueSource.Expression, text: "" },
+        variable: undefined,
+        action: undefined,
+        at: undefined,
+        removeTargets: undefined,
+      });
       node.updateMeta({ summary: "scripts" });
     } else {
       node.updateProps({ scripts: undefined });
@@ -66,7 +72,12 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
     if (text) {
       const schema = graph.getVariableSchema(text);
       if (inited.current && schema) {
-        node.updateMeta({ valueReference: { path: text, value: { name: schema.name, value: { type: schema.type, source: ValueSource.Variable, text: "", optional: schema.optional } } } });
+        node.updateMeta({
+          valueReference: {
+            path: text,
+            value: { name: schema.name, value: { type: schema.type, source: ValueSource.Variable, text: "", optional: schema.optional } },
+          },
+        });
       }
       return schema;
     }
@@ -87,7 +98,15 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
           <div className="form-item">
             <div className="label-item require">使用(JS)修改变量节点中的变量值</div>
             <div className="input-item">
-              <SuperInput height={100} hideIcon runtime="script" brand="variable" dataType={DataType.Any} value={nodeProps.scripts} onChange={onScriptsChange} />
+              <SuperInput
+                height={100}
+                hideIcon
+                runtime="script"
+                brand="variable"
+                dataType={DataType.Any}
+                value={nodeProps.scripts}
+                onChange={onScriptsChange}
+              />
             </div>
           </div>
         </div>
@@ -96,7 +115,14 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
           <div className="form-item">
             <div className="label-item require">选择要修改的变量</div>
             <div className="input-item">
-              <SuperInput hideIcon sourceType="variable" brand="variable" dataType={DataType.Any} value={nodeProps.variable} onChange={onVariableChange} />
+              <SuperInput
+                hideIcon
+                sourceType="variable"
+                brand="variable"
+                dataType={DataType.Any}
+                value={nodeProps.variable}
+                onChange={onVariableChange}
+              />
             </div>
           </div>
           {variableSchema && (
@@ -107,7 +133,7 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
                   {variableSchema.type === DataType.Array && (nodeProps.action || "assign") !== "assign" && (
                     <div className="position">
                       <Tooltip title="正数从头部开始，负数从尾部开始">
-                        <QuestionCircleOutlined />
+                        <Icons.QuestionCircleOutlined />
                       </Tooltip>
                       <span>位置从</span>
                       <InputNumber size="small" value={nodeProps.at || 0} onChange={onAtChange} />
@@ -122,7 +148,12 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
               )}
               <div className="input-item">
                 {nodeProps.action !== "remove" ? (
-                  <SchemaValueForm variant="filled" schema={variableSchema} value={nodeData.meta.valueReference?.value} onChange={onVariableValueChange} />
+                  <SchemaValueForm
+                    variant="filled"
+                    schema={variableSchema}
+                    value={nodeData.meta.valueReference?.value}
+                    onChange={onVariableValueChange}
+                  />
                   // biome-ignore lint/style/noNestedTernary: <>
                 ) : variableSchema.type === DataType.Array ? (
                   <div className="remove-targets">

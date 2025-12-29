@@ -1,6 +1,7 @@
 {
   "name": "@baseflow-nodes/start",
   "version": "0.0.1",
+  "private": true,
   "baseflow": {
     "type": "Start",
     "icon": "",
@@ -18,6 +19,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "rollup -c ../../../scripts/rollup.config.js"
+    "build": "rollup -c ../../../scripts/rollup.config.js",
+    "publish": "npm publish ../../../public/nodes/start"
   }
 }

@@ -1,6 +1,7 @@
 {
   "name": "@baseflow-nodes/task",
   "version": "0.0.1",
+  "private": true,
   "baseflow": {
     "type": "Task",
     "name": "Task任务",

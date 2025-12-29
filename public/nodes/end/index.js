@@ -8,8 +8,6 @@ const returnLabelRender = (item, parent) => {
 const Component = ({
   nodeData
 }) => {
-  "use no memo";
-
   const {
     graph
   } = Baseflow.useGraph();

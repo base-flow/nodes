@@ -11,8 +11,6 @@ const defaultReturn = {
 const Component = ({
   nodeData
 }) => {
-  "use no memo";
-
   const {
     graph
   } = Baseflow.useGraph();

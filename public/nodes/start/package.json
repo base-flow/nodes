@@ -15,8 +15,5 @@
   },
   "executor": {
     "node": "@baseflow-executors/start@0.0.1"
-  },
-  "dependencies": {
-    "@baseflow-executors/start": "0.0.1"
   }
 }
