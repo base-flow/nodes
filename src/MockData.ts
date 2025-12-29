@@ -8,9 +8,11 @@ import EndNode from "./_nodes/end/package.json";
 import FlowNode from "./_nodes/flow/package.json";
 import ForeachNode from "./_nodes/foreach/package.json";
 import HttpNode from "./_nodes/http/package.json";
+import ParallelNode from "./_nodes/parallel/package.json";
 import ReturnNode from "./_nodes/return/package.json";
 import StartNode from "./_nodes/start/package.json";
 import TaskNode from "./_nodes/task/package.json";
+import ThreadNode from "./_nodes/thread/package.json";
 import TriggerWebhookNode from "./_nodes/trigger-webhook/package.json";
 import TryCatchNode from "./_nodes/try-catch/package.json";
 import VariableNode from "./_nodes/variable/package.json";
@@ -71,7 +73,7 @@ const DevNodes: {
       nodes: [
         { tag: "@baseflow-nodes/choice", id: "choice1", childrenIds: ["branch1", "branch2"] },
         { tag: "@baseflow-nodes/branch", id: "branch1", parentId: "choice1" },
-        { tag: "@baseflow-nodes/branch", id: "branch2", parentId: "choice1" },
+        { tag: "@baseflow-nodes/branch", id: "branch2", parentId: "choice1", props: { default: true } },
       ],
       sources: {
         "@baseflow-nodes/choice": "@baseflow-nodes/choice@*",
@@ -84,6 +86,27 @@ const DevNodes: {
     dsl: JSON.stringify({
       nodes: [{ tag: "@baseflow-nodes/branch" }],
       sources: { "@baseflow-nodes/branch": "@baseflow-nodes/branch@*" },
+    }),
+  },
+  [ParallelNode.name]: {
+    ...ParallelNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [
+        { tag: "@baseflow-nodes/parallel", id: "parallel1", childrenIds: ["thread1", "thread2"] },
+        { tag: "@baseflow-nodes/thread", id: "thread1", parentId: "parallel1" },
+        { tag: "@baseflow-nodes/thread", id: "thread2", parentId: "parallel1" },
+      ],
+      sources: {
+        "@baseflow-nodes/parallel": "@baseflow-nodes/parallel@*",
+        "@baseflow-nodes/thread": "@baseflow-nodes/thread@*",
+      },
+    }),
+  },
+  [ThreadNode.name]: {
+    ...ThreadNode.baseflow,
+    dsl: JSON.stringify({
+      nodes: [{ tag: "@baseflow-nodes/thread" }],
+      sources: { "@baseflow-nodes/thread": "@baseflow-nodes/thread@*" },
     }),
   },
   [ForeachNode.name]: {

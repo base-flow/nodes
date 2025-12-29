@@ -1,5 +1,6 @@
+"use no memo";
 import type { INodeInputPanel, SchemaLabelRender, SchemaModel, SchemaToolsFilter, SchemaValue } from "@baseflow/react";
-import { createSchemaValueByModel, SchemaModelForm, SchemaValueForm, useNode } from "@baseflow/react";
+import { SchemaModelForm, SchemaValueForm, useNode, ValueSource } from "@baseflow/react";
 import { Switch } from "antd";
 import { memo, useCallback } from "react";
 import type { NodeProps } from "../model";
@@ -22,7 +23,6 @@ const valueLabelRender: SchemaLabelRender = (item, parent) => {
 };
 
 const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
-  "use no memo";
   const { node } = useNode(nodeData.id);
   const nodeProps = nodeData.props;
   const outputSchema = nodeData.meta.outputSchema!;
@@ -31,8 +31,25 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
 
   const onShowAssignmentChange = useCallback(
     (show?: boolean) => {
-      const newValue = show ? createSchemaValueByModel(outputSchema) : undefined;
-      node.updateProps({ initialValue: newValue });
+      if (!show) {
+        node.updateProps({ initialValue: undefined });
+      } else {
+        const { name, type, optional, children } = outputSchema;
+        const newValue: SchemaValue = {
+          name,
+          value: {
+            type,
+            optional,
+            source: ValueSource.Template,
+            text: "*",
+          },
+          children: children?.map(({ name, type, optional }) => ({
+            name: name,
+            value: { type, optional, source: ValueSource.Variable, text: "" },
+          })),
+        };
+        node.updateProps({ initialValue: newValue });
+      }
     },
     [node, outputSchema],
   );
@@ -59,11 +76,26 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
 
   return (
     <div className={styles.variable}>
-      <SchemaModelForm variant="borderless" labelRender={schemaLabelRender} toolsFilter={toolsFilter} value={outputSchema} onChange={onSchemaChange} />
+      <SchemaModelForm
+        variant="borderless"
+        labelRender={schemaLabelRender}
+        toolsFilter={toolsFilter}
+        value={outputSchema}
+        onChange={onSchemaChange}
+      />
       <div className="initial-assignment">
         <Switch value={showAssignment} checkedChildren="初始赋值" unCheckedChildren="初始赋值" onChange={onShowAssignmentChange} />
       </div>
-      {initialValue && <SchemaValueForm variant="filled" showRootTools labelRender={valueLabelRender} schema={outputSchema} value={initialValue} onChange={onValueChange} />}
+      {initialValue && (
+        <SchemaValueForm
+          variant="filled"
+          showRootTools
+          labelRender={valueLabelRender}
+          schema={outputSchema}
+          value={initialValue}
+          onChange={onValueChange}
+        />
+      )}
     </div>
   );
 };

@@ -68,7 +68,6 @@ export default {
     sourcemap: false,
   },
   plugins: [
-    del({ targets: "public" }),
     resolve({ extensions, browser: true }),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production"),
