@@ -10,6 +10,7 @@ import url from "@rollup/plugin-url";
 import autoprefixer from "autoprefixer";
 import del from "rollup-plugin-delete";
 import externalGlobals from "rollup-plugin-external-globals";
+import license from "rollup-plugin-license";
 import postcss from "rollup-plugin-postcss";
 
 const FilterPackageFields = {
@@ -76,6 +77,21 @@ export default {
     }),
     commonjs(),
     json(),
+    license({
+      sourcemap: false,
+      // banner: {
+      //   commentStyle: "regular",
+      //   content: {
+      //     file: path.join(SrcDir, "LICENSE"),
+      //   },
+      // },
+      thirdParty: {
+        includeSelf: true, // Default is false.
+        output: {
+          file: path.join(DistDir, "LICENSES-THIRD-PARTY"),
+        },
+      },
+    }),
     url({
       include: ["**/*.svg", "**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif"],
       limit: 10 * 1024, // <10kb 转 base64

@@ -1,9 +1,10 @@
 "use no memo";
 import type { INodeInputPanel, SchemaModel } from "@baseflow/react";
 import { DataType, KeyValues, RequiredRule, SchemaModelForm, useEvent, useNode } from "@baseflow/react";
-import { BlurInput, Icons, PathToRegexp, StringSelect } from "@baseflow/widgets";
+import { BlurInput, PathToRegexp, StringSelect } from "@baseflow/widgets";
 import type { FormInstance } from "antd";
 import { Form } from "antd";
+import { ClipboardCopy } from "lucide-react";
 import { memo, useEffect, useRef } from "react";
 import type { NodeProps } from "../model";
 import { ContentTypeOptions, DefaultHeaders, MethodOptions } from "../model";
@@ -98,7 +99,7 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData, rebuildKey }) => {
         onValuesChange={onFormChange}
       >
         <Form.Item label="监听地址" tooltip="path" name="path" rules={RequiredRule}>
-          <BlurInput allowClear prefix="BaseUrl / " addonAfter={<Icons.CopyOutlined />} placeholder="输入规划的url路径" />
+          <BlurInput allowClear prefix="BaseUrl / " addonAfter={<ClipboardCopy size="16px" />} placeholder="输入规划的url路径" />
         </Form.Item>
         <Form.Item label="监听方法" tooltip="method" name="methods" rules={RequiredRule}>
           <StringSelect block multiple options={MethodOptions} />

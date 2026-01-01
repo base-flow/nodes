@@ -21,8 +21,9 @@
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "@baseflow/react": "^0.0.31",
+    "@baseflow/react": "^0.0.32",
     "@baseflow/widgets": "^0.0.13",
+    "lucide-react": "^0.562.0",
     "antd": "6.1.0"
   },
   "devDependencies": {
@@ -72,6 +73,7 @@
     "rollup-plugin-delete": "^3.0.1",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-external-globals": "^0.13.0",
+    "rollup-plugin-license": "^3.6.0",
     "@babel/core": "^7.28.5",
     "@babel/preset-env": "^7.28.5",
     "@babel/preset-react": "^7.28.5",
