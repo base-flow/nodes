@@ -19,12 +19,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "@baseflow/react": "^0.0.32",
-    "@baseflow/widgets": "^0.0.13",
-    "lucide-react": "^0.562.0",
-    "antd": "6.1.0"
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "antd": "6.1.0",
+    "@baseflow/react": "0.0.32",
+    "@baseflow/widgets": "0.0.13",
+    "lucide-react": "^0.562.0"
   },
   "devDependencies": {
     "@types/node": "^22.12.0",

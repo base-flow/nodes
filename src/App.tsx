@@ -2,7 +2,6 @@ import type { IBaseWidgets, SchemaModel } from "@baseflow/react";
 import { DataType, FlowConfigProvider } from "@baseflow/react";
 import { DatePicker, DescMD, StringInput, StringSelect, TimePicker } from "@baseflow/widgets";
 import { Button, ConfigProvider, Modal, message, Segmented, Spin, Switch } from "antd";
-import { useEffect } from "react";
 import Canvas from "./Canvas";
 import { MockFlow } from "./MockData";
 
@@ -69,11 +68,6 @@ const expressionUtils: SchemaModel = {
 };
 
 function App() {
-  useEffect(() => {
-    return () => {
-      console.log("uninstall...");
-    };
-  }, []);
   return (
     <ConfigProvider>
       <FlowConfigProvider locale={Locale} widgets={widgets} monacoEditorUrl="/monaco/index.html" expressionUtils={expressionUtils}>

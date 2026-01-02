@@ -1,9 +1,9 @@
 "use no memo";
 import type { INodeInputPanel, SchemaValue, ValueConfig } from "@baseflow/react";
 import { DataType, KeyValues, SchemaValueForm, SuperInput, useEvent, useGraph, useNode, ValueSource } from "@baseflow/react";
-import { Icons } from "@baseflow/widgets";
 import type { RadioChangeEvent } from "antd";
 import { InputNumber, Radio, Switch, Tooltip } from "antd";
+import { CircleQuestionMark } from "lucide-react";
 import { memo, useEffect, useMemo, useRef } from "react";
 import type { NodeProps } from "../model";
 import styles from "./index.module.scss";
@@ -133,7 +133,7 @@ const Component: INodeInputPanel<NodeProps> = ({ nodeData }) => {
                   {variableSchema.type === DataType.Array && (nodeProps.action || "assign") !== "assign" && (
                     <div className="position">
                       <Tooltip title="正数从头部开始，负数从尾部开始">
-                        <Icons.QuestionCircleOutlined />
+                        <CircleQuestionMark size={12} className="help-icon" />
                       </Tooltip>
                       <span>位置从</span>
                       <InputNumber size="small" value={nodeProps.at || 0} onChange={onAtChange} />
