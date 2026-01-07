@@ -69,7 +69,13 @@ const expressionUtils: SchemaModel = {
 
 function App() {
   return (
-    <ConfigProvider>
+    <ConfigProvider
+      theme={{
+        token: {
+          fontSize: 13,
+        },
+      }}
+    >
       <FlowConfigProvider locale={Locale} widgets={widgets} monacoEditorUrl="/monaco/index.html" expressionUtils={expressionUtils}>
         <Canvas data={MockFlow} />
       </FlowConfigProvider>

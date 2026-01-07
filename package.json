@@ -14,7 +14,7 @@
     "lint": "biome lint",
     "check": "biome check",
     "dev": "vite",
-    "build:cdn": "node scripts/cdn.js",
+    "gcdn": "node scripts/gcdn.js",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
